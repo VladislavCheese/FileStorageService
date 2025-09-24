@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: file-storage-service
+  data:
+    mongodb:
+      database: file-storage
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      auto-index-creation: true # for demo app only
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+server:
+#  shutdown: graceful
+  port: 8080
+  servlet:
+    context-path: /api
+
+
+downloads:
+  base-url: http://localhost:8080/api/files/
+  core-pool-size: 2
+  max-pool-size: 20
+  queue-capacity: 200
+
+storage:
+  local: /app/data
+  autocreate: true
+
+
+logging:
+  level:
+    root: INFO
+    org.teletronics: DEBUG # for demo app only
