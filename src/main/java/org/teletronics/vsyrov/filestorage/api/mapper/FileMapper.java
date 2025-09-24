@@ -1,7 +1,7 @@
 package org.teletronics.vsyrov.filestorage.api.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.teletronics.vsyrov.filestorage.api.model.FileDto;
 import org.teletronics.vsyrov.filestorage.common.model.FileMetadata;
 
 /**
@@ -9,7 +9,5 @@ import org.teletronics.vsyrov.filestorage.common.model.FileMetadata;
  */
 @Mapper(componentModel = "spring")
 public interface FileMapper {
-
-//    @Mapping(target = "visibility", expression = "java( com.example.filestorage.api.model.Visibility.fromValue( file.getVisibility().name() ) )")
-//    FileDto toDto(FileMetadata file);
+    FileDto toDto(FileMetadata m);
 }

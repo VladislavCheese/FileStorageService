@@ -2,14 +2,13 @@ package org.teletronics.vsyrov.filestorage.common.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
 
 import static java.util.Objects.requireNonNull;
@@ -21,7 +20,7 @@ import static java.util.Objects.requireNonNull;
 public class HashingInputStream extends InputStream {
     private static final String DEFAULT_HASH_ALGORITHM = "SHA-256";
 
-    private final InputStream sourceStream;
+    private final DigestInputStream dis;
     private final MessageDigest messageDigest;
     @Getter
     private long bytesRead;
@@ -31,76 +30,86 @@ public class HashingInputStream extends InputStream {
     }
 
     public static HashingInputStream of(InputStream sourceStream, @Nullable String hashAlgorithm) {
-        requireNonNull(sourceStream, "The source InputStream cannot be null");
-        var resolvedHashAlgorithm = hashAlgorithm == null ? DEFAULT_HASH_ALGORITHM : hashAlgorithm;
-        return new HashingInputStream(sourceStream, resolvedHashAlgorithm);
+        return new HashingInputStream(sourceStream, hashAlgorithm);
     }
 
-    @SneakyThrows(NoSuchAlgorithmException.class)
-    private HashingInputStream(InputStream sourceStream, String hashAlgorithm) {
-        this.sourceStream = sourceStream;
-        this.messageDigest = MessageDigest.getInstance(hashAlgorithm);
+    private HashingInputStream(InputStream sourceStream, @Nullable String hashAlgorithm) {
+        requireNonNull(sourceStream, "The source InputStream cannot be null");
+        var resolvedHashAlgorithm = hashAlgorithm == null ? DEFAULT_HASH_ALGORITHM : hashAlgorithm;
+
+        try {
+            this.messageDigest = MessageDigest.getInstance(resolvedHashAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("Unknown hash algorithm: " + hashAlgorithm, e);
+        }
+        this.dis = new DigestInputStream(sourceStream, messageDigest);
     }
 
     @Override
     public int read() throws IOException {
-        int b = sourceStream.read();
+        int b = dis.read();
         if (b != -1) {
-            messageDigest.update((byte) b);
             bytesRead++;
         }
         return b;
     }
 
     @Override
-    public int read(@NotNull byte[] b, int off, int len) throws IOException {
-        int bytes = sourceStream.read(b, off, len);
-        if (bytes != -1) {
-            messageDigest.update(b, off, bytes);
-            bytesRead += bytes;
+    public int read(byte[] b, int off, int len) throws IOException {
+        int n = dis.read(b, off, len);
+        if (n > 0) {
+            bytesRead += n;
         }
-        return bytes;
+        return n;
     }
 
     @Override
-    public int read(@NotNull byte[] b) throws IOException {
+    public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
     @Override
     public long skip(long n) throws IOException {
-        return sourceStream.skip(n);
+        return dis.skip(n);
     }
 
     @Override
     public int available() throws IOException {
-        return sourceStream.available();
+        return dis.available();
     }
 
     @Override
     public void close() throws IOException {
-        sourceStream.close();
+        dis.close();
     }
 
     @Override
     public synchronized void mark(int readlimit) {
-        sourceStream.mark(readlimit);
+        dis.mark(readlimit);
     }
 
     @Override
     public synchronized void reset() throws IOException {
-        sourceStream.reset();
+        dis.reset();
         messageDigest.reset();
         bytesRead = 0;
     }
 
-
     @Override
     public boolean markSupported() {
-        return sourceStream.markSupported();
+        return dis.markSupported();
     }
 
-    public byte[] getHash() {
+    public byte[] digest() {
         return messageDigest.digest();
+    }
+
+    public String digestHex() {
+        byte[] d = digest();
+        StringBuilder sb = new StringBuilder(d.length * 2);
+        for (byte x : d) {
+            sb.append(String.format("%02x", x));
+        }
+        return sb.toString();
     }
 }

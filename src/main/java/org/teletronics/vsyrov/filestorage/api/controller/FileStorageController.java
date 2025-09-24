@@ -3,102 +3,78 @@ package org.teletronics.vsyrov.filestorage.api.controller;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.teletronics.vsyrov.filestorage.common.model.FileMetadata;
+import org.teletronics.vsyrov.filestorage.api.mapper.FileMapper;
+import org.teletronics.vsyrov.filestorage.api.model.FileDto;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
-import org.teletronics.vsyrov.filestorage.service.BasicFileService;
+import org.teletronics.vsyrov.filestorage.service.FileService;
 
 /**
  * @author vsyrov
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/files")
+@RequestMapping("/file")
 public class FileStorageController {
-    private final BasicFileService fileStorageService;
+    private final FileService files;
+    private final FileMapper mapper;
 
-    @PostMapping
-    public ResponseEntity<String> uploadFile(
-            @RequestHeader("X-User-Id") String userId,
+    @PostMapping(name = "/v1", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<FileDto> uploadFile(
+            @RequestHeader("X-User-Id") String ownerId,
             @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "filename", required = false) String filename,
             @RequestParam("visibility") VisibilityType visibility,
-            @RequestParam(value = "filename", required = false) @Nullable String filename,
-            @RequestParam(value = "tags", required = false) @Nullable List<String> tags
+            @RequestParam(value = "tags", required = false) List<String> tags
     ) {
-        String fileId = fileStorageService.uploadFile(userId, file, visibility, tags, filename);
-        return ResponseEntity.ok(fileId);
+        var meta = files.upload(ownerId, file, visibility, filename, tags);
+        return ResponseEntity.status(201).body(mapper.toDto(meta));
     }
 
-    @GetMapping
-    public ResponseEntity<List<FileMetadata>> listFiles(
-            @RequestHeader(value = "X-User-Id", required = false) String userId,
-            @RequestParam(value = "public", required = false) Boolean listPublic,
-            @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "sort", defaultValue = "fileName,asc") String sort
-    ) {
-        boolean getPublic = (listPublic != null && listPublic) || (userId == null);
-        String[] sortParts = sort.split(",");
-        Sort sortObj = Sort.by(Sort.Direction.fromString(sortParts.length > 1 ? sortParts[1] : "asc"), sortParts[0]);
-        Pageable pageable = PageRequest.of(page, size, sortObj);
-
-        var files = fileStorageService.listFiles(userId, getPublic, tag, pageable);
-        return ResponseEntity.ok(files);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> renameFile(
-            @RequestHeader("X-User-Id") String userId,
+    @PatchMapping("/v1/{id}/rename")
+    public ResponseEntity<Void> rename(
+            @RequestHeader("X-User-Id") String ownerId,
             @PathVariable String id,
-            @RequestParam("filename") String newFilename
+            @RequestBody RenameRequest body
     ) {
-        fileStorageService.renameFile(userId, id, newFilename);
+        files.rename(ownerId, id, body.filename());
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFile(
-            @RequestHeader("X-User-Id") String userId,
+    public record RenameRequest(String filename) {
+    }
+
+    @DeleteMapping("/v1/{id}")
+    public ResponseEntity<Void> delete(
+            @RequestHeader("X-User-Id") String ownerId,
             @PathVariable String id
     ) {
-        fileStorageService.deleteFile(userId, id);
+        files.delete(ownerId, id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> downloadFile(@PathVariable String id) {
-        GridFsResource resource = fileStorageService.getFileResource(id);
-        MediaType contentType = MediaType.APPLICATION_OCTET_STREAM;
-        String fileName = id;
-        try {
-            fileName = resource.getFilename();
-            String ct = resource.getContentType();
-            if (ct != null && !ct.isEmpty()) {
-                contentType = MediaType.parseMediaType(ct);
-            }
-        } catch (Exception e) {
-        }
+    @GetMapping("/v1/{id}")
+    public ResponseEntity<Resource> download(@PathVariable String id) {
+        var r = files.download(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .contentType(contentType)
-                .body(resource);
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + r.filename() + "\"")
+                .contentType(MediaType.parseMediaType(
+                        r.contentType() == null || r.contentType().isBlank()
+                                ? "application/octet-stream" : r.contentType()))
+                .body(r.body());
     }
 }

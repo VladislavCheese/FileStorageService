@@ -27,7 +27,7 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/file-storage
       SPRING_DATA_MONGODB_DATABASE: file-storage
     volumes:
-      - ./file_storage:/app/data
+      - file_storage:/data
     depends_on:
       mongodb:
         condition: service_healthy

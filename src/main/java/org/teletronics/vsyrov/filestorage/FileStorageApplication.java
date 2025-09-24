@@ -10,6 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FileStorageApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FileStorageServiceApplication.class, args);
+        SpringApplication.run(FileStorageApplication.class, args);
     }
 }

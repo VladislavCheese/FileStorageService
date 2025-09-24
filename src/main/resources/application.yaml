@@ -25,10 +25,8 @@ downloads:
   max-pool-size: 20
   queue-capacity: 200
 
-storage:
-  local: /app/data
-  autocreate: true
-
+filestorage:
+   path: /data
 
 logging:
   level:

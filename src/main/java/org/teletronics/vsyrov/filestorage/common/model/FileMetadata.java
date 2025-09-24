@@ -15,20 +15,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Value
 @Builder(toBuilder = true)
-@Document(collection = "files_metadata")
-@CompoundIndex(name = "uniq_name_per_user", def = "{'userId': 1, 'fileName': 1}", unique = true)
-@CompoundIndex(name = "uniq_content_per_user", def = "{'userId': 1, 'contentHash': 1}", unique = true)
+@Document(collection = "metadata")
+@CompoundIndex(name = "uniq_filename_per_owner", def = "{'ownerId': 1, 'fileName': 1}", unique = true)
+@CompoundIndex(name = "uniq_hash_per_owner", def = "{'ownerId': 1, 'hash': 1}", unique = true)
 public class FileMetadata {
     @Id
     String id;
-    String userId;
+    String ownerId;
     String fileName;
     String contentType;
     VisibilityType visibility;
     List<String> tags;
-    String contentHash;
+    String hash;
     long size;
     Instant createdTs;
-    Instant modifiedTs;
-    int version;
 }
