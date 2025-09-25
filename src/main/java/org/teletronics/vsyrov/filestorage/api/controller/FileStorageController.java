@@ -68,8 +68,11 @@ public class FileStorageController {
     }
 
     @GetMapping("/v1/{id}")
-    public ResponseEntity<Resource> download(@PathVariable String id) {
-        var r = files.download(id);
+    public ResponseEntity<Resource> download(
+            @RequestHeader("X-User-Id") String userId,
+            @PathVariable String id
+    ) {
+        var r = files.download(id, userId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + r.filename() + "\"")
                 .contentType(MediaType.parseMediaType(

@@ -34,7 +34,7 @@ public class ControllerDownloadIT extends MongoTestBase {
                 new MockMultipartFile("file", "d.txt", "text/plain", "data".getBytes()),
                 VisibilityType.PUBLIC, "d.txt", List.of());
 
-        mvc.perform(get("/api/v1/files/{id}", meta.getId()))
+        mvc.perform(get("/api/file/v1/{id}", meta.getId()))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", Matchers.containsString("filename=\"d.txt\"")))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));

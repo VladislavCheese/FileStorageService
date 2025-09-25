@@ -109,7 +109,7 @@ public class MetadataService {
 
     public Page<FileMetadata> listOwned(String ownerId, @Nullable String tag, Pageable pageable) {
         return (tag == null || tag.isBlank())
-                ? repo.findByUserId(ownerId, pageable)
+                ? repo.findByOwnerId(ownerId, pageable)
                 : repo.findByOwnerIdAndTagsContains(ownerId, tag.toLowerCase(), pageable);
     }
 

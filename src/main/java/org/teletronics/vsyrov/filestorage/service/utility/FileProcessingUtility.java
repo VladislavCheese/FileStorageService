@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.lang.Nullable;
+import org.springframework.web.multipart.MultipartFile;
 import org.teletronics.vsyrov.filestorage.common.io.HashingInputStream;
 
 /**
@@ -71,5 +72,11 @@ public class FileProcessingUtility {
                 .distinct()
                 .limit(5)
                 .toList();
+    }
+
+    public static String defineFileName(MultipartFile multipart, @Nullable String filenameOverride) {
+        return (filenameOverride != null && !filenameOverride.isBlank())
+                ? filenameOverride.trim()
+                : (multipart.getOriginalFilename() != null ? multipart.getOriginalFilename() : "file");
     }
 }

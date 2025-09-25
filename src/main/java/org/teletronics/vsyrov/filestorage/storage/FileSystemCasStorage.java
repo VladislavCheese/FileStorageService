@@ -3,26 +3,36 @@ package org.teletronics.vsyrov.filestorage.storage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardOpenOption.READ;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static java.nio.file.StandardOpenOption.WRITE;
 
 /**
  * @author vsyrov
  */
+@Slf4j
 @Component
 public class FileSystemCasStorage implements ContentStorageService {
-    private final Path base;
     private final Path tmp;
     private final Path cas;
 
-    public FileSystemCasStorage() throws IOException {
-        this.base = Path.of(System.getProperty("filestorage.path", "/data"));
+    @Autowired
+    public FileSystemCasStorage(
+            @Value("${filestorage.base-path:${java.io.tmpdir}/filestorage}") String baseDir
+    ) throws IOException {
+        Path base = Paths.get(baseDir).toAbsolutePath().normalize();
         this.tmp = base.resolve("tmp");
         this.cas = base.resolve("cas/sha256");
         Files.createDirectories(tmp);
@@ -31,47 +41,54 @@ public class FileSystemCasStorage implements ContentStorageService {
 
     @Override
     public Path writeTemp(InputStream in) throws IOException {
-        Path t = Files.createTempFile(tmp, "up-", ".part");
-        try (OutputStream out = Files.newOutputStream(t, WRITE)) {
+        Files.createDirectories(tmp);
+        Path tmpFile = Files.createTempFile(tmp, "up-", ".part");
+        try (OutputStream out = Files.newOutputStream(tmpFile, WRITE, TRUNCATE_EXISTING)) {
             in.transferTo(out);
+            out.flush();
+            return tmpFile;
         }
-        return t;
     }
 
     @Override
-    public Path moveToCas(Path temp, String sha256) throws IOException {
-        String a = sha256.substring(0, 2);
-        String b = sha256.substring(2, 4);
-        Path dir = cas.resolve(a).resolve(b);
-        Files.createDirectories(dir);
-        Path target = dir.resolve(sha256);
+    public Path moveToCas(Path temp, String contentHash) throws IOException {
+        Path dir = resolvePath(contentHash);
+        Files.createDirectories(dir.getParent());
+        Path target = dir.resolve(contentHash);
         if (Files.exists(target)) {
-            Files.deleteIfExists(temp); // контент уже есть — temp не нужен
+            log.info("File already exists at {}", target);
+            Files.deleteIfExists(temp);
             return target;
         }
-        return Files.move(temp, target, ATOMIC_MOVE);
+        try {
+            return Files.move(temp, target, ATOMIC_MOVE);
+        } catch (AtomicMoveNotSupportedException e) {
+            log.debug("Atomic move operation not supported", e);
+            return Files.move(temp, target, REPLACE_EXISTING);
+        }
     }
 
     @Override
-    public InputStream open(String sha256) throws IOException {
-        Path p = pathOf(sha256);
+    public InputStream open(String contentHash) throws IOException {
+        Path p = resolvePath(contentHash);
         return Files.newInputStream(p, READ);
     }
 
     @Override
-    public boolean deleteIfExists(String sha256) throws IOException {
-        Path p = pathOf(sha256);
+    public boolean deleteIfExists(String contentHash) throws IOException {
+        Path p = resolvePath(contentHash);
         return Files.deleteIfExists(p);
     }
 
     @Override
-    public boolean exists(String sha256) throws IOException {
-        return Files.exists(pathOf(sha256));
+    public boolean exists(String contentHash) throws IOException {
+        return Files.exists(resolvePath(contentHash));
     }
 
-    private Path pathOf(String sha256) {
-        return cas.resolve(sha256.substring(0, 2))
-                .resolve(sha256.substring(2, 4))
-                .resolve(sha256);
+    @Override
+    public Path resolvePath(String contentHash) {
+        return cas.resolve(contentHash.substring(0, 2))
+                .resolve(contentHash.substring(2, 4))
+                .resolve(contentHash);
     }
 }

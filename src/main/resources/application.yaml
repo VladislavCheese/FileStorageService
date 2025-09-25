@@ -13,7 +13,6 @@ spring:
       max-request-size: -1
 
 server:
-#  shutdown: graceful
   port: 8080
   servlet:
     context-path: /api
@@ -26,9 +25,9 @@ downloads:
   queue-capacity: 200
 
 filestorage:
-   path: /data
+   base-path: /data
 
 logging:
   level:
     root: INFO
-    org.teletronics: DEBUG # for demo app only
+    org.teletronics: DEBUG

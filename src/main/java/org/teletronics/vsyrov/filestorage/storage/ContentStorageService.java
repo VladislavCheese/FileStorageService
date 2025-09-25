@@ -14,22 +14,24 @@ public interface ContentStorageService {
     Path writeTemp(InputStream in) throws IOException;
 
     /**
-     * Переместить temp в CAS по sha256 и вернуть финальный Path (атомарно).
+     * Переместить temp в CAS по contentHash и вернуть финальный Path (атомарно).
      */
-    Path moveToCas(Path temp, String sha256) throws IOException;
+    Path moveToCas(Path temp, String contentHash) throws IOException;
 
     /**
-     * Открыть поток для чтения по sha256.
+     * Открыть поток для чтения по contentHash.
      */
-    InputStream open(String sha256) throws IOException;
+    InputStream open(String contentHash) throws IOException;
 
     /**
-     * Удалить файл по sha256 (если он вообще нужен; обычно GC по ссылкам).
+     * Удалить файл по contentHash (если он вообще нужен; обычно GC по ссылкам).
      */
-    boolean deleteIfExists(String sha256) throws IOException;
+    boolean deleteIfExists(String contentHash) throws IOException;
 
     /**
-     * Проверить существование файла по sha256.
+     * Проверить существование файла по contentHash.
      */
-    boolean exists(String sha256) throws IOException;
+    boolean exists(String contentHash) throws IOException;
+
+    Path resolvePath(String contentHash);
 }

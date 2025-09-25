@@ -14,7 +14,7 @@ public interface FileMetadataRepository extends MongoRepository<FileMetadata, St
 
     boolean existsByOwnerIdAndHash(String userId, String contentHash);
 
-    Page<FileMetadata> findByUserId(String userId, Pageable pageable);
+    Page<FileMetadata> findByOwnerId(String userId, Pageable pageable);
 
     Page<FileMetadata> findByOwnerIdAndTagsContains(String userId, String tags, Pageable pageable);
 
@@ -24,8 +24,8 @@ public interface FileMetadataRepository extends MongoRepository<FileMetadata, St
 
     long countByHash(String hash);
 
-//    @Query("{ 'userId': ?0, 'tags': ?1 }")
-//    Page<FileMetadata> findByUserIdAndTag(String userId, String tag, Pageable pageable);
+//    @Query("{ 'ownerId': ?0, 'tags': ?1 }")
+//    Page<FileMetadata> findByUserIdAndTag(String ownerId, String tag, Pageable pageable);
 //
 //    @Query("{ 'visibility': ?0, 'tags': ?1 }")
 //    Page<FileMetadata> findByVisibilityAndTag(VisibilityType visibility, String tag, Pageable pageable);

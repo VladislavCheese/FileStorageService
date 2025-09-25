@@ -14,7 +14,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.teletronics.vsyrov.filestorage.common.exception.DuplicateFileException;
-import org.teletronics.vsyrov.filestorage.common.exception.NotFoundException;
+import org.teletronics.vsyrov.filestorage.common.exception.ForbiddenException;
+import org.teletronics.vsyrov.filestorage.common.exception.UnexpectedStorageException;
 import org.teletronics.vsyrov.filestorage.common.io.HashingInputStream;
 import org.teletronics.vsyrov.filestorage.common.model.FileMetadata;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
@@ -38,9 +39,7 @@ public class FileService {
             @Nullable String filenameOverride,
             @Nullable List<String> tags
     ) {
-        String filename = (filenameOverride != null && !filenameOverride.isBlank())
-                ? filenameOverride.trim()
-                : (multipart.getOriginalFilename() != null ? multipart.getOriginalFilename() : "file");
+        String filename = FileProcessingUtility.defineFileName(multipart, filenameOverride);
 
         List<String> normTags = FileProcessingUtility.normalizeTags(tags);
         if (metadata.existsNameForUser(ownerId, filename)) {
@@ -48,33 +47,29 @@ public class FileService {
         }
 
         Path temp;
-        String sha256;
+        String contentHash;
         long size;
         try (InputStream raw = multipart.getInputStream();
              HashingInputStream his = FileProcessingUtility.hashingStream(raw)) {
 
             temp = storage.writeTemp(his);
-            sha256 = his.digestHex();
-            size = his.getBytesRead();
+            contentHash = his.digestHex();
+            size = (multipart.getSize() > 0) ? multipart.getSize() : his.getBytesRead();
         } catch (Exception e) {
             throw new RuntimeException("Failed to receive upload", e);
         }
 
         try {
-            if (metadata.existsContentForUser(ownerId, sha256)) {
+            if (metadata.existsContentForUser(ownerId, contentHash)) {
                 Files.deleteIfExists(temp);
                 throw new DuplicateFileException("Same content already uploaded by this user");
             }
 
-            storage.moveToCas(temp, sha256);
+            storage.moveToCas(temp, contentHash);
             temp = null;
 
             String contentType = FileProcessingUtility.detectContentType(
-                    Path.of(System.getProperty("filestorage.base", "/data"))
-                            .resolve("cas/sha256")
-                            .resolve(sha256.substring(0, 2))
-                            .resolve(sha256.substring(2, 4))
-                            .resolve(sha256),
+                    storage.resolvePath(contentHash),
                     multipart.getContentType()
             );
 
@@ -83,7 +78,7 @@ public class FileService {
                     filename,
                     contentType,
                     size,
-                    sha256,
+                    contentHash,
                     normTags,
                     visibility
             );
@@ -114,30 +109,40 @@ public class FileService {
     }
 
     public void delete(String ownerId, String fileId) {
-        FileMetadata m = metadata.getOwned(ownerId, fileId);
-        String hash = m.getHash();
+        FileMetadata meta = metadata.getOwned(ownerId, fileId);
+        String hash = meta.getHash();
         metadata.deleteOwned(ownerId, fileId);
         if (metadata.existsContentForUser(ownerId, hash)) {
             try {
                 storage.deleteIfExists(hash);
-            } catch (Exception ignore) {
-                log.warn("Failed to remove file {} for owner {}", fileId, ownerId, ignore);
+            } catch (Exception exc) {
+                log.warn("Failed to remove file {} for owner {}", fileId, ownerId, exc);
+                //todo throw exc
             }
         }
     }
 
-    public DownloadResource download(String fileId) {
-        FileMetadata m = metadata.getById(fileId);
+    public DownloadResource download(String fileId, String userId) {
+        FileMetadata meta = metadata.getById(fileId);
+        if (!meta.getOwnerId().equals(userId) && meta.getVisibility() != VisibilityType.PUBLIC) {
+            throw new ForbiddenException("Download file " + fileId + " unavailable for user " + userId);
+        }
         try {
-            InputStream is = storage.open(m.getHash());
+            InputStream is = storage.open(meta.getHash());
             return new DownloadResource(
                     new InputStreamResource(is),
-                    m.getFileName(),
-                    m.getContentType()
+                    meta.getFileName(),
+                    meta.getContentType()
             );
         } catch (Exception e) {
-            throw new NotFoundException("Binary not found");
+            log.warn("Failed to download file: {}", fileId, e);
+            throw new UnexpectedStorageException("Download failed for file " + fileId, e);
         }
+    }
+
+    public List<String> getAccessibleTags(String userId) {
+        //todo use metadata service for tags
+        return List.of();
     }
 
     public record DownloadResource(
