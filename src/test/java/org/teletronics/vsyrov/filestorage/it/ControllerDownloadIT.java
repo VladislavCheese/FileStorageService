@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
+import org.teletronics.vsyrov.filestorage.it.config.MongoTestBase;
 import org.teletronics.vsyrov.filestorage.service.FileService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,15 +27,15 @@ public class ControllerDownloadIT extends MongoTestBase {
     @Autowired
     MockMvc mvc;
     @Autowired
-    FileService files;
+    FileService fileService;
 
     @Test
     void uploadAndDownload_ok() throws Exception {
-        var meta = files.upload("userZ",
+        var meta = fileService.upload("userZ",
                 new MockMultipartFile("file", "d.txt", "text/plain", "data".getBytes()),
                 VisibilityType.PUBLIC, "d.txt", List.of());
 
-        mvc.perform(get("/api/file/v1/{id}", meta.getId()))
+        mvc.perform(get("/file/v1/{id}", meta.getId()).header("X-User-Id", "userZ"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", Matchers.containsString("filename=\"d.txt\"")))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN));

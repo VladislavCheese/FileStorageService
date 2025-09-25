@@ -7,14 +7,18 @@ package org.teletronics.vsyrov.filestorage.common.model;
 import java.time.Instant;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Value
+@Data
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "metadata")
 @CompoundIndex(name = "uniq_filename_per_owner", def = "{'ownerId': 1, 'fileName': 1}", unique = true)
 @CompoundIndex(name = "uniq_hash_per_owner", def = "{'ownerId': 1, 'hash': 1}", unique = true)

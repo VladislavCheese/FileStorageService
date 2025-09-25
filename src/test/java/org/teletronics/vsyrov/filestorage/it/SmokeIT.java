@@ -5,6 +5,7 @@ import org.bson.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.teletronics.vsyrov.filestorage.it.config.MongoTestBase;
 
 /**
  * @author vsyrov

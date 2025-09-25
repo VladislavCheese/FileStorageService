@@ -23,10 +23,4 @@ public interface FileMetadataRepository extends MongoRepository<FileMetadata, St
     Page<FileMetadata> findByVisibilityAndTagsContains(VisibilityType visibility, String tags, Pageable pageable);
 
     long countByHash(String hash);
-
-//    @Query("{ 'ownerId': ?0, 'tags': ?1 }")
-//    Page<FileMetadata> findByUserIdAndTag(String ownerId, String tag, Pageable pageable);
-//
-//    @Query("{ 'visibility': ?0, 'tags': ?1 }")
-//    Page<FileMetadata> findByVisibilityAndTag(VisibilityType visibility, String tag, Pageable pageable);
 }

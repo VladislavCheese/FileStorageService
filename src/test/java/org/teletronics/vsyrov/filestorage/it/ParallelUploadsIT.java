@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
+import org.teletronics.vsyrov.filestorage.it.config.MongoTestBase;
 import org.teletronics.vsyrov.filestorage.service.FileService;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

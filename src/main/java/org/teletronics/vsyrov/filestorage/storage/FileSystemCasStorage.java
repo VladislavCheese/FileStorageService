@@ -52,9 +52,9 @@ public class FileSystemCasStorage implements ContentStorageService {
 
     @Override
     public Path moveToCas(Path temp, String contentHash) throws IOException {
-        Path dir = resolvePath(contentHash);
-        Files.createDirectories(dir.getParent());
-        Path target = dir.resolve(contentHash);
+        Path target = resolvePath(contentHash);
+        Files.createDirectories(target.getParent());
+
         if (Files.exists(target)) {
             log.info("File already exists at {}", target);
             Files.deleteIfExists(temp);

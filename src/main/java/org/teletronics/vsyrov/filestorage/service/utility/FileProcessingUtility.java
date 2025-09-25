@@ -79,4 +79,8 @@ public class FileProcessingUtility {
                 ? filenameOverride.trim()
                 : (multipart.getOriginalFilename() != null ? multipart.getOriginalFilename() : "file");
     }
+
+    public static String normalizeTag(String tag) {
+        return tag == null ? "" : tag.trim().toLowerCase();
+    }
 }

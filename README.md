@@ -1,4 +1,4 @@
-# File Storage Api Documentation
+# File Storage API Documentation
 
 ## Endpoints
 
@@ -12,7 +12,7 @@ Uploads a new file with metadata.
 
 - `fileName` (required): Name of the file
 - `userId` (required): ID of the user uploading the file
-- `visibility` (optional): File visibility (USER_PRIVATE/PUBLIC). Defaults to USER_PRIVATE
+- `visibility` (optional): File visibility (PRIVATE/PUBLIC). Defaults to PRIVATE
 - `tags` (optional): Comma-separated list of tags. No more than 5 tags allowed.
 
 **Example:**
@@ -27,7 +27,7 @@ curl -X POST "http://localhost:8080/api/files?fileName={fileName}&userId={userId
 ```json
 {
   "fileName": "myfile.txt",
-  "visibility": "USER_PRIVATE",
+  "visibility": "PRIVATE",
   "contentType": "text/plain",
   "size": 15,
   "timestamp": "2025-06-24T10:13:02.130Z",

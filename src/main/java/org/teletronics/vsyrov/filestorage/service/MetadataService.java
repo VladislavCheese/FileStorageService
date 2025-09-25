@@ -19,6 +19,7 @@ import org.teletronics.vsyrov.filestorage.common.exception.NotFoundException;
 import org.teletronics.vsyrov.filestorage.common.model.FileMetadata;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
 import org.teletronics.vsyrov.filestorage.dao.FileMetadataRepository;
+import org.teletronics.vsyrov.filestorage.service.utility.FileProcessingUtility;
 
 /**
  * @author vsyrov
@@ -104,7 +105,9 @@ public class MetadataService {
     public Page<FileMetadata> listPublic(@Nullable String tag, Pageable pageable) {
         return (tag == null || tag.isBlank())
                 ? repo.findByVisibility(VisibilityType.PUBLIC, pageable)
-                : repo.findByVisibilityAndTagsContains(VisibilityType.PUBLIC, tag.toLowerCase(), pageable);
+                : repo.findByVisibilityAndTagsContains(
+                VisibilityType.PUBLIC,
+                FileProcessingUtility.normalizeTag(tag), pageable);
     }
 
     public Page<FileMetadata> listOwned(String ownerId, @Nullable String tag, Pageable pageable) {

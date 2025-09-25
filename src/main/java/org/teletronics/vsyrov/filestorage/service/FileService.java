@@ -112,7 +112,7 @@ public class FileService {
         FileMetadata meta = metadata.getOwned(ownerId, fileId);
         String hash = meta.getHash();
         metadata.deleteOwned(ownerId, fileId);
-        if (metadata.existsContentForUser(ownerId, hash)) {
+        if (metadata.countByHash(hash) == 0) {
             try {
                 storage.deleteIfExists(hash);
             } catch (Exception exc) {

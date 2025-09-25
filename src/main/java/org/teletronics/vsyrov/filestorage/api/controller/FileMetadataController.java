@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.teletronics.vsyrov.filestorage.api.mapper.FileMapper;
-import org.teletronics.vsyrov.filestorage.api.model.FileDto;
 import org.teletronics.vsyrov.filestorage.service.FileService;
 
 /**

@@ -1,4 +1,4 @@
-package org.teletronics.vsyrov.filestorage.it.large;
+package org.teletronics.vsyrov.filestorage.it;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.teletronics.vsyrov.filestorage.common.model.VisibilityType;
-import org.teletronics.vsyrov.filestorage.it.MongoTestBase;
+import org.teletronics.vsyrov.filestorage.it.config.MongoTestBase;
+import org.teletronics.vsyrov.filestorage.it.config.SimulatedLargeMultipartFile;
 import org.teletronics.vsyrov.filestorage.service.FileService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,7 +52,7 @@ public class LargeUploadIT extends MongoTestBase {
 
     static class ZeroInputStream extends InputStream {
         private final long total;
-        private long read = 0;
+        private long read = 0L;
 
         ZeroInputStream(long total) {
             this.total = total;
@@ -59,7 +60,9 @@ public class LargeUploadIT extends MongoTestBase {
 
         @Override
         public int read() {
-            if (read >= total) return -1;
+            if (read >= total) {
+                return -1;
+            }
             read++;
             return 0;
         }

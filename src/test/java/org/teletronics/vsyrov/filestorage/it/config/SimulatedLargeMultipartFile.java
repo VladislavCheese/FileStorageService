@@ -1,4 +1,4 @@
-package org.teletronics.vsyrov.filestorage.it.large;
+package org.teletronics.vsyrov.filestorage.it.config;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

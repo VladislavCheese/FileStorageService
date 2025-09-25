@@ -1,4 +1,4 @@
-package org.teletronics.vsyrov.filestorage.it;
+package org.teletronics.vsyrov.filestorage.it.config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 )
 public abstract class MongoTestBase {
 
-    static final MongoDBContainer MONGO = new MongoDBContainer("mongo:7.0");
+    static final MongoDBContainer MONGO = new MongoDBContainer("mongo:8.0");
 
     @DynamicPropertySource
     static void mongoProps(DynamicPropertyRegistry registry) {
