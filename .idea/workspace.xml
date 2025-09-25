@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="44e015f0-81f4-40ea-9474-d80870bbd474" name="Changes" comment="Fix tests + documentation">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="336zUtrwkeRDedANotDneymMXAu" />
+  <component name="ProjectLevelVcsManager">
+    <OptionsSetting value="false" id="Update" />
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.ControllerDownloadIT.executor": "Run",
+    "JUnit.FileNamesListIT.executor": "Run",
+    "JUnit.FileServiceDeleteForbiddenIT.executor": "Run",
+    "JUnit.FileServiceSameNameIT.executor": "Run",
+    "JUnit.LargeUploadIT.executor": "Run",
+    "JUnit.ParallelUploadsIT.executor": "Run",
+    "JUnit.SmokeIT.executor": "Run",
+    "Maven.file-storage-service [clean,install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/vsyrov/IdeaProjects/file-storage",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/vsyrov/IdeaProjects/file-storage/src/main/java/org/teletronics/hiring/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.27126437",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docker" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.FileNamesListIT">
+    <configuration name="ControllerDownloadIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="file-storage-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.teletronics.vsyrov.filestorage.it.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.teletronics.vsyrov.filestorage.it" />
+      <option name="MAIN_CLASS_NAME" value="org.teletronics.vsyrov.filestorage.it.ControllerDownloadIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileNamesListIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="file-storage-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.teletronics.vsyrov.filestorage.it.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.teletronics.vsyrov.filestorage.it" />
+      <option name="MAIN_CLASS_NAME" value="org.teletronics.vsyrov.filestorage.it.FileNamesListIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileServiceDeleteForbiddenIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="file-storage-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.teletronics.vsyrov.filestorage.it.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.teletronics.vsyrov.filestorage.it" />
+      <option name="MAIN_CLASS_NAME" value="org.teletronics.vsyrov.filestorage.it.FileServiceDeleteForbiddenIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileServiceSameNameIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="file-storage-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.teletronics.vsyrov.filestorage.it.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.teletronics.vsyrov.filestorage.it" />
+      <option name="MAIN_CLASS_NAME" value="org.teletronics.vsyrov.filestorage.it.FileServiceSameNameIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LargeUploadIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="file-storage-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.teletronics.vsyrov.filestorage.it.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.teletronics.vsyrov.filestorage.it" />
+      <option name="MAIN_CLASS_NAME" value="org.teletronics.vsyrov.filestorage.it.LargeUploadIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.FileNamesListIT" />
+        <item itemvalue="JUnit.ControllerDownloadIT" />
+        <item itemvalue="JUnit.FileServiceDeleteForbiddenIT" />
+        <item itemvalue="JUnit.LargeUploadIT" />
+        <item itemvalue="JUnit.FileServiceSameNameIT" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.27812.49" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.27812.49" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="44e015f0-81f4-40ea-9474-d80870bbd474" name="Changes" comment="" />
+      <created>1758652329291</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758652329291</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TerminalProjectNonSharedOptionsProvider">
+    <envs>
+      <env key="GSID" value="IDE:idea:7ecf2d02c073471982a76811bc6ff0dd IDETERM:idea:7ecf2d02c073471982a76811bc6ff0dd" />
+    </envs>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:junit:junit" />
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.validation:jakarta.validation-api" />
+    <option featureType="dependencySupport" implementationName="java:io.projectreactor:reactor-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="java:org.hibernate.validator:hibernate-validator" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-webmvc" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Service Draft" />
+    <MESSAGE value="Changed storage type to Content-Addressable file storage + tests" />
+    <MESSAGE value="Fixed some bugs using tests" />
+    <MESSAGE value="Adda" />
+    <MESSAGE value="Поправил тесты" />
+    <MESSAGE value="Fix tests + documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix tests + documentation" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/teletronics/vsyrov/filestorage/FileStorageApplication.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/teletronics/vsyrov/filestorage/common/model/FileMetadata.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

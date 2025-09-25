@@ -29,8 +29,8 @@ import org.teletronics.vsyrov.filestorage.storage.ContentStorageService;
 @Service
 @RequiredArgsConstructor
 public class FileService {
-    private final ContentStorageService storage;
-    private final MetadataService metadata;
+    private final ContentStorageService contentStorageService;
+    private final MetadataService metadataService;
 
     public FileMetadata upload(
             String ownerId,
@@ -42,7 +42,7 @@ public class FileService {
         String filename = FileProcessingUtility.defineFileName(multipart, filenameOverride);
 
         List<String> normTags = FileProcessingUtility.normalizeTags(tags);
-        if (metadata.existsNameForUser(ownerId, filename)) {
+        if (metadataService.existsNameForUser(ownerId, filename)) {
             throw new DuplicateFileException("Filename already exists for this user");
         }
 
@@ -52,7 +52,7 @@ public class FileService {
         try (InputStream raw = multipart.getInputStream();
              HashingInputStream his = FileProcessingUtility.hashingStream(raw)) {
 
-            temp = storage.writeTemp(his);
+            temp = contentStorageService.writeTemp(his);
             contentHash = his.digestHex();
             size = (multipart.getSize() > 0) ? multipart.getSize() : his.getBytesRead();
         } catch (Exception e) {
@@ -60,20 +60,20 @@ public class FileService {
         }
 
         try {
-            if (metadata.existsContentForUser(ownerId, contentHash)) {
+            if (metadataService.existsContentForUser(ownerId, contentHash)) {
                 Files.deleteIfExists(temp);
                 throw new DuplicateFileException("Same content already uploaded by this user");
             }
 
-            storage.moveToCas(temp, contentHash);
+            contentStorageService.moveToCas(temp, contentHash);
             temp = null;
 
             String contentType = FileProcessingUtility.detectContentType(
-                    storage.resolvePath(contentHash),
+                    contentStorageService.resolvePath(contentHash),
                     multipart.getContentType()
             );
 
-            return metadata.saveNew(
+            return metadataService.saveNew(
                     ownerId,
                     filename,
                     contentType,
@@ -97,24 +97,24 @@ public class FileService {
     }
 
     public Page<FileMetadata> listPublic(String tag, Pageable pageable) {
-        return metadata.listPublic(tag, pageable);
+        return metadataService.listPublic(tag, pageable);
     }
 
     public Page<FileMetadata> listOwned(String ownerId, String tag, Pageable pageable) {
-        return metadata.listOwned(ownerId, tag, pageable);
+        return metadataService.listOwned(ownerId, tag, pageable);
     }
 
     public void rename(String ownerId, String fileId, String newName) {
-        metadata.rename(ownerId, fileId, newName);
+        metadataService.rename(ownerId, fileId, newName);
     }
 
     public void delete(String ownerId, String fileId) {
-        FileMetadata meta = metadata.getOwned(ownerId, fileId);
+        FileMetadata meta = metadataService.getOwned(ownerId, fileId);
         String hash = meta.getHash();
-        metadata.deleteOwned(ownerId, fileId);
-        if (metadata.countByHash(hash) == 0) {
+        metadataService.deleteOwned(ownerId, fileId);
+        if (metadataService.countByHash(hash) == 0) {
             try {
-                storage.deleteIfExists(hash);
+                contentStorageService.deleteIfExists(hash);
             } catch (Exception exc) {
                 log.warn("Failed to remove file {} for owner {}", fileId, ownerId, exc);
                 //todo throw exc
@@ -123,12 +123,12 @@ public class FileService {
     }
 
     public DownloadResource download(String fileId, String userId) {
-        FileMetadata meta = metadata.getById(fileId);
+        FileMetadata meta = metadataService.getById(fileId);
         if (!meta.getOwnerId().equals(userId) && meta.getVisibility() != VisibilityType.PUBLIC) {
             throw new ForbiddenException("Download file " + fileId + " unavailable for user " + userId);
         }
         try {
-            InputStream is = storage.open(meta.getHash());
+            InputStream is = contentStorageService.open(meta.getHash());
             return new DownloadResource(
                     new InputStreamResource(is),
                     meta.getFileName(),

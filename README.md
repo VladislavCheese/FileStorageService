@@ -4,7 +4,7 @@
 
 ### Upload File
 
-`POST /api/files`
+`POST /api/file/v1`
 
 Uploads a new file with metadata.
 
@@ -18,8 +18,10 @@ Uploads a new file with metadata.
 **Example:**
 
 ```bash
-curl -X POST "http://localhost:8080/api/files?fileName={fileName}&userId={userId}&visibility={visibility}&tags={tags}" \
+curl -X POST "http://localhost:8080/api/file/v1?fileName={fileName}&userId={userId}&visibility={visibility}&tags={tags}" \
   -F "file=@/path/to/your/file.txt" \
+  Headers: \
+  X-User-Id: <userId> 
 ```
 
 **Response:**
@@ -31,7 +33,7 @@ curl -X POST "http://localhost:8080/api/files?fileName={fileName}&userId={userId
   "contentType": "text/plain",
   "size": 15,
   "timestamp": "2025-06-24T10:13:02.130Z",
-  "url": "http://localhost:8080/files/some-random-uuid"
+  "url": "http://localhost:8080/file/v1/some-random-uuid"
 }
 ```
 
@@ -39,7 +41,7 @@ curl -X POST "http://localhost:8080/api/files?fileName={fileName}&userId={userId
 
 ### Download File
 
-`GET /api/files/{uuid}?userId={userId}`
+`GET /api/file/v1/{id}?userId={userId}`
 
 Downloads a file by its UUID.
 
@@ -54,14 +56,14 @@ Downloads a file by its UUID.
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/files/{uuid}?userId={userId}" -o downloaded_file.txt
+curl -X GET "http://localhost:8080/api/file/v1/{id}?userId={userId}" -o downloaded_file.txt
 ```
 
 ---
 
 ### List Public Files
 
-`GET /api/files/public`
+`GET /api/files/v1/public`
 
 Retrieves a list of public files, optionally filtered by tag.
 
@@ -74,7 +76,7 @@ Retrieves a list of public files, optionally filtered by tag.
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/files/public?tag={tag}"
+curl -X GET "http://localhost:8080/api/files/v1/public?tag={tag}"
 ```
 
 **Response:**
@@ -105,7 +107,7 @@ curl -X GET "http://localhost:8080/api/files/public?tag={tag}"
 
 ### List User Files
 
-`GET /api/files/public`
+`GET /api/files/v1`
 
 Retrieves a list of public files, optionally filtered by tag.
 
@@ -120,7 +122,7 @@ Retrieves a list of public files, optionally filtered by tag.
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/files?userId={userId}&page={page}&size={size}&tag={tag}&visibility={visibility}"
+curl -X GET "http://localhost:8080/api/files/v1?userId={userId}&page={page}&size={size}&tag={tag}&visibility={visibility}"
 ```
 
 **Response:**
@@ -151,7 +153,7 @@ curl -X GET "http://localhost:8080/api/files?userId={userId}&page={page}&size={s
 
 ### Delete File
 
-`DELETE /api/files/{uuid}`
+`DELETE /api/file/v1/{id}`
 
 Deletes a file by its UUID.
 
@@ -166,7 +168,7 @@ Deletes a file by its UUID.
 **Example:**
 
 ```bash
-curl -X DELETE "http://localhost:8080/api/files/{uuid}?userId={userId}"
+curl -X DELETE "http://localhost:8080/api/file/v1/{id}"
 ```
 
 **Response:**
@@ -177,7 +179,7 @@ HTTP 204 No Content
 
 ### List Accessible Tags
 
-`GET /api/files/tags`
+`GET /api/files/v1/tags`
 
 **Query Parameters:**
 
@@ -186,7 +188,7 @@ HTTP 204 No Content
 **Example:**
 
 ```bash
-curl -X GET "http://localhost:8080/api/files/tags?userId={userId}"
+curl -X GET "http://localhost:8080/api/files/v1/tags?userId={userId}"
 ```
 
 **Response:**
