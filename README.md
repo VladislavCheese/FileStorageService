@@ -10,7 +10,6 @@ A minimal, production-ready REST API to store, list, download and delete files w
 
 ### 1) Run locally with Docker Compose
 
-# From the repo root (dockerfile is at docker/Dockerfile)
 ```
 docker compose up --build
 ```
@@ -29,7 +28,9 @@ docker compose down -v
 ### 2) Run the full test suite
 
 **Option A**: locally (Docker required):
+```bash
 ./mvnw -q -DskipTests=false clean verify
+```
 
 **Option B**: inside a Maven Docker container:
 ```bash
@@ -268,20 +269,25 @@ A GitHub Actions workflow (if added) should:
 
 ## Examples
 
-### Upload, then download
-# Upload
+### Upload
+```
 ID=$(curl -s -X POST "http://localhost:8080/api/file/v1" \
 -H "X-User-Id: demo" \
 -F "file=@README.md" \
 -F "visibility=PUBLIC" \
 | jq -r '.id')
+```
 
-# Download
+### Download
+```
 curl -L "http://localhost:8080/api/file/v1/${ID}" \
 -H "X-User-Id: someone" -o out.bin -D -
+```
 
 ### List public by tag, sorted by name
+```
 curl "http://localhost:8080/api/files/v1/public?tag=alpha&sort=fileName,asc"
+```
 
 ## License
 MIT
