@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44e015f0-81f4-40ea-9474-d80870bbd474" name="Changes" comment="Fix tests + documentation">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="44e015f0-81f4-40ea-9474-d80870bbd474" name="Changes" comment="Fix tests + documentation" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,6 +27,10 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -44,39 +46,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.ControllerDownloadIT.executor": "Run",
-    "JUnit.FileNamesListIT.executor": "Run",
-    "JUnit.FileServiceDeleteForbiddenIT.executor": "Run",
-    "JUnit.FileServiceSameNameIT.executor": "Run",
-    "JUnit.LargeUploadIT.executor": "Run",
-    "JUnit.ParallelUploadsIT.executor": "Run",
-    "JUnit.SmokeIT.executor": "Run",
-    "Maven.file-storage-service [clean,install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/vsyrov/IdeaProjects/file-storage",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/vsyrov/IdeaProjects/file-storage/src/main/java/org/teletronics/hiring/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.27126437",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.ControllerDownloadIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileNamesListIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileServiceDeleteForbiddenIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.FileServiceSameNameIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LargeUploadIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParallelUploadsIT.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SmokeIT.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.file-storage-service [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/vsyrov/IdeaProjects/file-storage&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/vsyrov/IdeaProjects/file-storage/src/main/java/org/teletronics/hiring/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.27126437&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -191,7 +193,7 @@
   </component>
   <component name="TerminalProjectNonSharedOptionsProvider">
     <envs>
-      <env key="GSID" value="IDE:idea:7ecf2d02c073471982a76811bc6ff0dd IDETERM:idea:7ecf2d02c073471982a76811bc6ff0dd" />
+      <env key="GSID" value="IDE:idea:5fb5bb7a777145bab15e9ad0e8914e44 IDETERM:idea:5fb5bb7a777145bab15e9ad0e8914e44" />
     </envs>
   </component>
   <component name="TypeScriptGeneratedFilesManager">

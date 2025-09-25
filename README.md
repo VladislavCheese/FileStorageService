@@ -56,13 +56,13 @@ X-User-Id: <userId>
 
 ```json
 {
-"id": "string", // unique download id (unguessable)
+"id": "string", 
 "ownerId": "string",
 "fileName": "string",
 "contentType": "string",
 "visibility": "PUBLIC | USER_PRIVATE",
 "tags": ["string"],
-"size": 123, // bytes
+"size": 123, 
 "createdTs": "2025-09-25T08:44:10Z"
 }
 ```
@@ -229,10 +229,10 @@ curl "http://localhost:8080/api/files/v1/tags" -H "X-User-Id: alice"
 ## Behavior & constraints
 - Deduplication per user: The same user cannot upload the same filename or the same content twice.
 - Tags: at most 5, normalized to lower-case, no guessing; TAG and tAg are equal.
-- Content type detection: if not provided by client or is generic, it's detected post-upload from the stored file on disk (Tika + Files.probeContentType fallback).
+- Content type detection: if not provided by client or is generic, it's detected post-upload from the stored file on disk.
 - Huge files: upload is streamed; SHA-256 is computed on the fly. No size limit is imposed by the service; use infrastructure limits if needed.
 - Download links: Use the returned id (unguessable). No link guessing is possible.
-- Visibility: PUBLIC vs USER_PRIVATE. Only owner can manage (rename, delete).
+- Visibility: PUBLIC vs USER_PRIVATE. Only owner can manage (rename, delete, download).
 - Sorting & pagination: all list endpoints support both.
 
 ## Configuration
